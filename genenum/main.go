@@ -8,20 +8,9 @@ import (
 	"log"
 
 	"github.com/podhmo/gengen/genenum/generator/emitter"
+	"github.com/podhmo/gengen/genenum/sandbox"
 	"github.com/podhmo/gengen/genenum/schema"
 )
-
-type Op struct {
-	schema.Enum
-}
-
-func (op *Op) Values() []*schema.EnumValue {
-	return []*schema.EnumValue{
-		op.Uint("Add"),
-		op.Uint("Mul"),
-		op.Uint("Sub"),
-	}
-}
 
 func run() error {
 	g, err := emitter.NewEmitter()
@@ -30,7 +19,7 @@ func run() error {
 	}
 
 	// TODO: this
-	op := &Op{}
+	op := &sandbox.Op{}
 	typename := op.Name(op)
 
 	src := schema.ToEmitterInput(op)

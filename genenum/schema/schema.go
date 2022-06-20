@@ -46,12 +46,18 @@ func (e *Enum) Uint(name string) *EnumValue {
 }
 
 type EnumValue struct {
-	name  string
-	value interface{}
+	name    string
+	value   interface{}
+	comment string
 }
 
 func (v *EnumValue) Name(name string) *EnumValue {
 	v.name = name
+	return v
+}
+
+func (v *EnumValue) Comment(value string) *EnumValue {
+	v.comment = value
 	return v
 }
 
@@ -65,7 +71,7 @@ func ToEmitterInput(e EnumInterface) map[string]interface{} {
 			"Name":         x.name,
 			"PrefixedName": x.name,
 			"Value":        x.value,
-			"Comment":      "",
+			"Comment":      x.comment,
 		}
 	}
 
