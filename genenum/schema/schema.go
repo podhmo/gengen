@@ -4,15 +4,15 @@ import "reflect"
 
 // TODO(podhmo): to interface
 
-type Counter struct {
+type counter struct {
 	c uint
 }
 
-func (c *Counter) Reset(z uint) {
+func (c *counter) Reset(z uint) {
 	c.c = z
 }
 
-func (c *Counter) Count() uint {
+func (c *counter) Count() uint {
 	v := c.c
 	c.c++
 	return v
@@ -25,7 +25,7 @@ type EnumInterface interface {
 }
 
 type Enum struct {
-	c Counter
+	c counter
 }
 
 func (e Enum) Name(self interface{}) string {
