@@ -21,7 +21,7 @@ func (c *counter) Count() uint {
 	return v
 }
 
-type EnumInterface interface {
+type Interface interface {
 	Name(self interface{}) string
 	Type() string
 	Values() []*EnumValue
@@ -65,7 +65,7 @@ func (v *EnumValue) Comment(value string) *EnumValue {
 }
 
 // toEmitterInput : emitter.Enum
-func toEmitterInput(e EnumInterface) map[string]interface{} {
+func toEmitterInput(e Interface) map[string]interface{} {
 	src := e.Values()
 	dst := make([]map[string]interface{}, len(src))
 	for i, x := range src {
@@ -86,6 +86,6 @@ func toEmitterInput(e EnumInterface) map[string]interface{} {
 	}
 }
 
-func MarshalSchema(e EnumInterface) ([]byte, error) {
+func MarshalSchema(e Interface) ([]byte, error) {
 	return json.Marshal(toEmitterInput(e))
 }

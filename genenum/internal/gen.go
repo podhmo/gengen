@@ -23,7 +23,7 @@ func run() error {
 	// pkg name
 	pkg := "gen"
 	// input:
-	schemas := []schema.EnumInterface{
+	schemas := []schema.Interface{
 		sandbox.Op{},
 	}
 

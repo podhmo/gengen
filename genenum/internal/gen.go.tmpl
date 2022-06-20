@@ -25,7 +25,7 @@ func run() error {
 	// pkg name
 	pkg := {{ .Name | printf "%q" }}
 	// input:
-	schemas := []schema.EnumInterface{
+	schemas := []schema.Interface{
 {{- range .Schemas }}
 		{{ .Prefix }}.{{ .Name }}{},
 {{ end }}
