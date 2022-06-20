@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"go/token"
 	"sort"
 	"text/template"
 
@@ -18,28 +17,33 @@ var content embed.FS
 
 // Emitter is responsible for generating validation files for the given in a go source file.
 type Emitter struct {
-	Version           string
-	Revision          string
-	BuildDate         string
-	BuiltBy           string
+	Version   string
+	Revision  string
+	BuildDate string
+	BuiltBy   string
+
 	t                 *template.Template
 	knownTemplates    map[string]*template.Template
 	userTemplateNames []string
-	fileSet           *token.FileSet
-	noPrefix          bool
-	lowercaseLookup   bool
-	caseInsensitive   bool
-	marshal           bool
-	sql               bool
-	flag              bool
-	names             bool
-	leaveSnakeCase    bool
-	prefix            string
-	sqlNullInt        bool
-	sqlNullStr        bool
-	ptr               bool
-	mustParse         bool
-	forceLower        bool
+
+	Config
+}
+
+type Config struct {
+	NoPrefix        bool
+	LowercaseLookup bool
+	CaseInsensitive bool
+	Marshal         bool
+	Sql             bool
+	Flag            bool
+	Names           bool
+	LeaveSnakeCase  bool
+	Prefix          string
+	SqlNullInt      bool
+	SqlNullStr      bool
+	Ptr             bool
+	MustParse       bool
+	ForceLower      bool
 }
 
 // Enum holds data for a discovered enum in the parsed source
@@ -83,8 +87,7 @@ func NewEmitter() (*Emitter, error) {
 		knownTemplates:    make(map[string]*template.Template),
 		userTemplateNames: make([]string, 0),
 		t:                 t,
-		fileSet:           token.NewFileSet(), // todo: remove
-		noPrefix:          false,
+		Config:            Config{},
 	}
 
 	g.updateTemplates()
@@ -114,17 +117,17 @@ func (g *Emitter) Emit(pkg string, enums []Enum) ([]byte, error) {
 		data := map[string]interface{}{
 			"enum":       enum,
 			"name":       name,
-			"lowercase":  g.lowercaseLookup,
-			"nocase":     g.caseInsensitive,
-			"marshal":    g.marshal,
-			"sql":        g.sql,
-			"flag":       g.flag,
-			"names":      g.names,
-			"ptr":        g.ptr,
-			"sqlnullint": g.sqlNullInt,
-			"sqlnullstr": g.sqlNullStr,
-			"mustparse":  g.mustParse,
-			"forcelower": g.forceLower,
+			"lowercase":  g.Config.LowercaseLookup,
+			"nocase":     g.Config.CaseInsensitive,
+			"marshal":    g.Config.Marshal,
+			"sql":        g.Config.Sql,
+			"flag":       g.Config.Flag,
+			"names":      g.Config.Names,
+			"ptr":        g.Config.Ptr,
+			"sqlnullint": g.Config.SqlNullInt,
+			"sqlnullstr": g.Config.SqlNullStr,
+			"mustparse":  g.Config.MustParse,
+			"forcelower": g.Config.ForceLower,
 		}
 
 		err = g.t.ExecuteTemplate(vBuff, "enum", data)
