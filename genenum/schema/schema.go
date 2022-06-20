@@ -9,7 +9,6 @@ import (
 
 type Interface interface {
 	EnumName(self interface{}) string
-	EnumType() string
 	EnumValues() []*EnumValue
 }
 
@@ -19,10 +18,6 @@ type Enum struct {
 
 func (e Enum) EnumName(self interface{}) string {
 	return reflect.TypeOf(self).Name()
-}
-
-func (e Enum) EnumType() string {
-	return "uint64" // TODO: implementation
 }
 
 func (e Enum) EnumValues() []*EnumValue {
@@ -50,6 +45,13 @@ func (v *EnumValue) Comment(value string) *EnumValue {
 	return v
 }
 
+func guessType(src []*EnumValue) string {
+	for _, x := range src {
+		return reflect.TypeOf(x.value).Name()
+	}
+	return "string" // ?
+}
+
 func toLoadSchema(e Interface) load.Enum {
 	src := e.EnumValues()
 	dst := make([]load.EnumValue, len(src))
@@ -63,10 +65,11 @@ func toLoadSchema(e Interface) load.Enum {
 		}
 	}
 
+	typ := guessType(src)
 	return load.Enum{
 		Name:   e.EnumName(e),
-		Type:   e.EnumType(),
 		Prefix: "",
+		Type:   typ,
 		Values: dst,
 	}
 }
