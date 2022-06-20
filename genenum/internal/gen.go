@@ -32,9 +32,8 @@ func run() error {
 	for i, x := range schemas {
 		var dst emitter.Enum
 		typename := x.Name(x)
-		src := schema.ToEmitterInput(x)
 
-		b, err := json.Marshal(src)
+		b, err := schema.MarshalSchema(x)
 		if err != nil {
 			return fmt.Errorf("marshal in %v: %w", typename, err)
 		}

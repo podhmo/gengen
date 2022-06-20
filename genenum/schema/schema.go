@@ -1,6 +1,9 @@
 package schema
 
-import "reflect"
+import (
+	"encoding/json"
+	"reflect"
+)
 
 // TODO(podhmo): to interface
 
@@ -61,8 +64,8 @@ func (v *EnumValue) Comment(value string) *EnumValue {
 	return v
 }
 
-// ToEmitterInput : emitter.Enum
-func ToEmitterInput(e EnumInterface) map[string]interface{} {
+// toEmitterInput : emitter.Enum
+func toEmitterInput(e EnumInterface) map[string]interface{} {
 	src := e.Values()
 	dst := make([]map[string]interface{}, len(src))
 	for i, x := range src {
@@ -81,4 +84,8 @@ func ToEmitterInput(e EnumInterface) map[string]interface{} {
 		"Prefix": "-",
 		"Values": dst,
 	}
+}
+
+func MarshalSchema(e EnumInterface) ([]byte, error) {
+	return json.Marshal(toEmitterInput(e))
 }
