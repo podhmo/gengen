@@ -1,4 +1,4 @@
-//go:buld gen
+//go:build gen
 
 package main
 

@@ -9,11 +9,15 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/pkg/errors"
+	"github.com/podhmo/gengen/genenum/generator/load"
 	"golang.org/x/tools/imports"
 )
 
 //go:embed enum.tmpl
 var content embed.FS
+
+type Enum = load.Enum
+type EnumValue = load.EnumValue
 
 // Generator is responsible for generating validation files for the given in a go source file.
 type Generator struct {

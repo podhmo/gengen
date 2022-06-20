@@ -8,9 +8,10 @@ import (
 	"log"
 
 	"github.com/podhmo/gengen/genenum/generator"
+	"github.com/podhmo/gengen/genenum/generator/load"
 	"github.com/podhmo/gengen/genenum/schema"
 
-	"github.com/podhmo/gengen/genenum/internal"
+	"github.com/podhmo/gengen/genenum/internal/sandbox"
 )
 
 func run() error {
@@ -23,10 +24,10 @@ func run() error {
 	pkg := "gen"
 	// input:
 	schemas := []schema.Interface{
-		internal.Op{},
+		sandbox.Op{},
 	}
 
-	targets := make([]generator.Enum, len(schemas))
+	targets := make([]load.Enum, len(schemas))
 
 	for i, x := range schemas {
 		typename := x.EnumName(x)
@@ -35,7 +36,7 @@ func run() error {
 		if err != nil {
 			return fmt.Errorf("marshal in %v: %w", typename, err)
 		}
-		dst, err := generator.UnmarshalSchema(b)
+		dst, err := load.UnmarshalSchema(b)
 		if err != nil {
 			return fmt.Errorf("unmarshal in %v: %w", typename, err)
 		}

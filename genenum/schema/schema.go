@@ -3,6 +3,8 @@ package schema
 import (
 	"encoding/json"
 	"reflect"
+
+	"github.com/podhmo/gengen/genenum/generator/load"
 )
 
 type Interface interface {
@@ -48,29 +50,29 @@ func (v *EnumValue) Comment(value string) *EnumValue {
 	return v
 }
 
-func toGeneratorInput(e Interface) map[string]interface{} {
+func toLoadSchema(e Interface) load.Enum {
 	src := e.EnumValues()
-	dst := make([]map[string]interface{}, len(src))
+	dst := make([]load.EnumValue, len(src))
 	for i, x := range src {
-		dst[i] = map[string]interface{}{
-			"RawName":      x.name,
-			"Name":         x.name,
-			"PrefixedName": x.name,
-			"Value":        x.value,
-			"Comment":      x.comment,
+		dst[i] = load.EnumValue{
+			RawName:      x.name,
+			Name:         x.name,
+			PrefixedName: x.name,
+			Value:        x.value,
+			Comment:      x.comment,
 		}
 	}
 
-	return map[string]interface{}{
-		"Name":   e.EnumName(e),
-		"Type":   e.EnumType(),
-		"Prefix": "-",
-		"Values": dst,
+	return load.Enum{
+		Name:   e.EnumName(e),
+		Type:   e.EnumType(),
+		Prefix: "",
+		Values: dst,
 	}
 }
 
 func MarshalSchema(e Interface) ([]byte, error) {
-	return json.Marshal(toGeneratorInput(e))
+	return json.Marshal(toLoadSchema(e))
 }
 
 // util
