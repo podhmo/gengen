@@ -2,6 +2,7 @@ package emitter
 
 import (
 	"bytes"
+	"embed"
 	"fmt"
 	"go/token"
 	"sort"
@@ -11,6 +12,9 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/tools/imports"
 )
+
+//go:embed enum.tmpl
+var content embed.FS
 
 // Emitter is responsible for generating validation files for the given in a go source file.
 type Emitter struct {
@@ -55,9 +59,22 @@ type EnumValue struct {
 	Comment      string
 }
 
-// NewGenerator is a constructor method for creating a new Generator with default
+// NewEmitter is a constructor method for creating a new Emitter with default
 // templates loaded.
-func NewGenerator() *Emitter {
+func NewEmitter() (*Emitter, error) {
+
+	funcs := sprig.TxtFuncMap()
+	funcs["stringify"] = Stringify
+	funcs["mapify"] = Mapify
+	funcs["unmapify"] = Unmapify
+	funcs["namify"] = Namify
+	funcs["offset"] = Offset
+
+	t, err := template.New("generator").Funcs(funcs).ParseFS(content, "enum.tmpl")
+	if err != nil {
+		return nil, err
+	}
+
 	g := &Emitter{
 		Version:           "-",
 		Revision:          "-",
@@ -65,24 +82,14 @@ func NewGenerator() *Emitter {
 		BuiltBy:           "-",
 		knownTemplates:    make(map[string]*template.Template),
 		userTemplateNames: make([]string, 0),
-		t:                 template.New("generator"),
-		fileSet:           token.NewFileSet(),
+		t:                 t,
+		fileSet:           token.NewFileSet(), // todo: remove
 		noPrefix:          false,
 	}
 
-	funcs := sprig.TxtFuncMap()
-
-	funcs["stringify"] = Stringify
-	funcs["mapify"] = Mapify
-	funcs["unmapify"] = Unmapify
-	funcs["namify"] = Namify
-	funcs["offset"] = Offset
-
-	g.t.Funcs(funcs)
-
 	g.updateTemplates()
 
-	return g
+	return g, nil
 }
 
 // Emit does the heavy lifting for the code generation starting from the parsed AST file.
