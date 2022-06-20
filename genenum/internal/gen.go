@@ -10,7 +10,7 @@ import (
 	"github.com/podhmo/gengen/genenum/generator/emitter"
 	"github.com/podhmo/gengen/genenum/schema"
 
-	"github.com/podhmo/gengen/genenum/sandbox"
+	"github.com/podhmo/gengen/genenum/internal"
 )
 
 func run() error {
@@ -23,7 +23,7 @@ func run() error {
 	pkg := "gen"
 	// input:
 	schemas := []schema.Interface{
-		sandbox.Op{},
+		internal.Op{},
 	}
 
 	targets := make([]emitter.Enum, len(schemas))

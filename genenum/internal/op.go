@@ -1,4 +1,4 @@
-package sandbox
+package internal
 
 import (
 	"github.com/podhmo/gengen/genenum/schema"
