@@ -9,7 +9,7 @@ import (
 
 	"github.com/Masterminds/sprig"
 	"github.com/pkg/errors"
-	"github.com/podhmo/gengen/genenum/generator/load"
+	"github.com/podhmo/gengen/enum/generator/load"
 	"golang.org/x/tools/imports"
 )
 

@@ -42,7 +42,7 @@ type Options struct {
 }
 
 func main() {
-	options := &Options{PackageName: "gen", Interface: "github.com/podhmo/gengen/genenum/schema.Interface"}
+	options := &Options{PackageName: "gen", Interface: "github.com/podhmo/gengen/enum/schema.Interface"}
 	if err := flagstruct.Parse(options); err != nil {
 		log.Fatalf("parse options: %v", err)
 	}

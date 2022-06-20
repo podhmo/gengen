@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/podhmo/gengen/genenum/generator"
+	"github.com/podhmo/gengen/enum/generator"
 )
 
 func run() error {

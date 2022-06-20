@@ -1,51 +1,51 @@
-package schema
+package enum
 
 import (
 	"encoding/json"
 	"reflect"
 
-	"github.com/podhmo/gengen/genenum/generator/load"
+	"github.com/podhmo/gengen/enum/generator/load"
 )
 
 type Interface interface {
 	EnumName(self interface{}) string
-	EnumValues() []*EnumValue
+	EnumValues() []*Value
 }
 
-type Enum struct {
+type Schema struct {
 	c counter
 }
 
-func (e Enum) EnumName(self interface{}) string {
+func (e Schema) EnumName(self interface{}) string {
 	return reflect.TypeOf(self).Name()
 }
 
-func (e Enum) EnumValues() []*EnumValue {
+func (e Schema) EnumValues() []*Value {
 	return nil
 }
 
-func (e *Enum) Uint(name string) *EnumValue {
+func (e *Schema) Uint(name string) *Value {
 	value := e.c.Count()
-	return &EnumValue{value: uint64(value), name: name}
+	return &Value{value: uint64(value), name: name}
 }
 
-type EnumValue struct {
+type Value struct {
 	name    string
 	value   interface{}
 	comment string
 }
 
-func (v *EnumValue) Name(name string) *EnumValue {
+func (v *Value) Name(name string) *Value {
 	v.name = name
 	return v
 }
 
-func (v *EnumValue) Comment(value string) *EnumValue {
+func (v *Value) Comment(value string) *Value {
 	v.comment = value
 	return v
 }
 
-func guessType(src []*EnumValue) string {
+func guessType(src []*Value) string {
 	for _, x := range src {
 		return reflect.TypeOf(x.value).Name()
 	}

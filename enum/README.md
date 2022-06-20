@@ -1,4 +1,4 @@
-# genenum
+# enum
 
 :warning: This is a example package, so does not use this directly.
 
