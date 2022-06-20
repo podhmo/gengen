@@ -5,22 +5,6 @@ import (
 	"reflect"
 )
 
-// TODO(podhmo): to interface
-
-type counter struct {
-	c uint
-}
-
-func (c *counter) Reset(z uint) {
-	c.c = z
-}
-
-func (c *counter) Count() uint {
-	v := c.c
-	c.c++
-	return v
-}
-
 type Interface interface {
 	EnumName(self interface{}) string
 	EnumType() string
@@ -64,7 +48,6 @@ func (v *EnumValue) Comment(value string) *EnumValue {
 	return v
 }
 
-// toEmitterInput : emitter.Enum
 func toEmitterInput(e Interface) map[string]interface{} {
 	src := e.EnumValues()
 	dst := make([]map[string]interface{}, len(src))
@@ -88,4 +71,19 @@ func toEmitterInput(e Interface) map[string]interface{} {
 
 func MarshalSchema(e Interface) ([]byte, error) {
 	return json.Marshal(toEmitterInput(e))
+}
+
+// util
+type counter struct {
+	c uint
+}
+
+func (c *counter) Reset(z uint) {
+	c.c = z
+}
+
+func (c *counter) Count() uint {
+	v := c.c
+	c.c++
+	return v
 }

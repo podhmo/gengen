@@ -4,7 +4,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 
@@ -30,22 +29,15 @@ func run() error {
 	targets := make([]emitter.Enum, len(schemas))
 
 	for i, x := range schemas {
-		var dst emitter.Enum
 		typename := x.EnumName(x)
 
 		b, err := schema.MarshalSchema(x)
 		if err != nil {
 			return fmt.Errorf("marshal in %v: %w", typename, err)
 		}
-
-		if err := json.Unmarshal(b, &dst); err != nil {
+		dst, err := emitter.UnmarshalSchema(b)
+		if err != nil {
 			return fmt.Errorf("unmarshal in %v: %w", typename, err)
-		}
-
-		// fixme: toJSON uint as float64 in marshal
-		for i, v := range dst.Values {
-			v.Value = uint64(v.Value.(float64))
-			dst.Values[i] = v
 		}
 
 		targets[i] = dst

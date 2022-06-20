@@ -46,23 +46,6 @@ type Config struct {
 	ForceLower      bool
 }
 
-// Enum holds data for a discovered enum in the parsed source
-type Enum struct {
-	Name   string
-	Prefix string
-	Type   string
-	Values []EnumValue
-}
-
-// EnumValue holds the individual data for each enum value within the found enum.
-type EnumValue struct {
-	RawName      string
-	Name         string
-	PrefixedName string
-	Value        interface{}
-	Comment      string
-}
-
 // NewEmitter is a constructor method for creating a new Emitter with default
 // templates loaded.
 func NewEmitter() (*Emitter, error) {
