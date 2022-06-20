@@ -8,7 +8,7 @@ type Op struct {
 	schema.Enum
 }
 
-func (op *Op) Values() []*schema.EnumValue {
+func (op Op) Values() []*schema.EnumValue {
 	return []*schema.EnumValue{
 		op.Uint("Add").Comment("lhs + rhs"),
 		op.Uint("Mul"),

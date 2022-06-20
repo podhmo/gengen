@@ -1,4 +1,4 @@
-{{- /* need: struct {Name string; Pkgs []string; Schemas []struct{ Prefix string; Name string; }; } */ -}}
+{{- /* need: struct {Name string; Packages []string; Schemas []struct{ Prefix string; Name string; }; } */ -}}
 //go:buld gen
 
 package main
@@ -10,9 +10,7 @@ import (
 
 	"github.com/podhmo/gengen/genenum/generator/emitter"
 	"github.com/podhmo/gengen/genenum/schema"
-
-// imported for schemas
-{{- range .Pkgs }}
+{{- range .Packages }}
 	{{ . | printf "%q" }}
 {{ end }}
 )
@@ -28,7 +26,7 @@ func run() error {
 	// input:
 	schemas := []schema.EnumInterface{
 {{- range .Schemas }}
-		&{{ .Prefix }}.{{ .Name }}{},
+		{{ .Prefix }}.{{ .Name }}{},
 {{ end }}
 	}
 

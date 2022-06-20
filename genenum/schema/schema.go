@@ -28,15 +28,15 @@ type Enum struct {
 	c Counter
 }
 
-func (e *Enum) Name(self interface{}) string {
-	return reflect.TypeOf(self).Elem().Name()
+func (e Enum) Name(self interface{}) string {
+	return reflect.TypeOf(self).Name()
 }
 
-func (e *Enum) Type() string {
+func (e Enum) Type() string {
 	return "uint64" // TODO: implementation
 }
 
-func (e *Enum) Values() []*EnumValue {
+func (e Enum) Values() []*EnumValue {
 	return nil
 }
 
