@@ -31,7 +31,7 @@ func run() error {
 
 	for i, x := range schemas {
 		var dst emitter.Enum
-		typename := x.Name(x)
+		typename := x.EnumName(x)
 
 		b, err := schema.MarshalSchema(x)
 		if err != nil {

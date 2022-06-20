@@ -22,24 +22,24 @@ func (c *counter) Count() uint {
 }
 
 type Interface interface {
-	Name(self interface{}) string
-	Type() string
-	Values() []*EnumValue
+	EnumName(self interface{}) string
+	EnumType() string
+	EnumValues() []*EnumValue
 }
 
 type Enum struct {
 	c counter
 }
 
-func (e Enum) Name(self interface{}) string {
+func (e Enum) EnumName(self interface{}) string {
 	return reflect.TypeOf(self).Name()
 }
 
-func (e Enum) Type() string {
+func (e Enum) EnumType() string {
 	return "uint64" // TODO: implementation
 }
 
-func (e Enum) Values() []*EnumValue {
+func (e Enum) EnumValues() []*EnumValue {
 	return nil
 }
 
@@ -66,7 +66,7 @@ func (v *EnumValue) Comment(value string) *EnumValue {
 
 // toEmitterInput : emitter.Enum
 func toEmitterInput(e Interface) map[string]interface{} {
-	src := e.Values()
+	src := e.EnumValues()
 	dst := make([]map[string]interface{}, len(src))
 	for i, x := range src {
 		dst[i] = map[string]interface{}{
@@ -79,8 +79,8 @@ func toEmitterInput(e Interface) map[string]interface{} {
 	}
 
 	return map[string]interface{}{
-		"Name":   e.Name(e),
-		"Type":   e.Type(),
+		"Name":   e.EnumName(e),
+		"Type":   e.EnumType(),
 		"Prefix": "-",
 		"Values": dst,
 	}
