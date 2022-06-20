@@ -1,4 +1,4 @@
-package emitter
+package generator
 
 import (
 	"encoding/json"

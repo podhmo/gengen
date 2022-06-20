@@ -1,4 +1,4 @@
-package emitter
+package generator
 
 import (
 	"bytes"
@@ -15,8 +15,8 @@ import (
 //go:embed enum.tmpl
 var content embed.FS
 
-// Emitter is responsible for generating validation files for the given in a go source file.
-type Emitter struct {
+// Generator is responsible for generating validation files for the given in a go source file.
+type Generator struct {
 	Version   string
 	Revision  string
 	BuildDate string
@@ -46,9 +46,9 @@ type Config struct {
 	ForceLower      bool
 }
 
-// NewEmitter is a constructor method for creating a new Emitter with default
+// NewGenerator is a constructor method for creating a new Generator with default
 // templates loaded.
-func NewEmitter() (*Emitter, error) {
+func NewGenerator() (*Generator, error) {
 
 	funcs := sprig.TxtFuncMap()
 	funcs["stringify"] = Stringify
@@ -62,7 +62,7 @@ func NewEmitter() (*Emitter, error) {
 		return nil, err
 	}
 
-	g := &Emitter{
+	g := &Generator{
 		Version:           "-",
 		Revision:          "-",
 		BuildDate:         "-",
@@ -79,7 +79,7 @@ func NewEmitter() (*Emitter, error) {
 }
 
 // Emit does the heavy lifting for the code generation starting from the parsed AST file.
-func (g *Emitter) Emit(pkg string, enums []Enum) ([]byte, error) {
+func (g *Generator) Emit(pkg string, enums []Enum) ([]byte, error) {
 	sort.Slice(enums, func(i, j int) bool { return enums[i].Name < enums[j].Name })
 
 	vBuff := bytes.NewBuffer([]byte{})
@@ -140,7 +140,7 @@ func (g *Emitter) Emit(pkg string, enums []Enum) ([]byte, error) {
 
 // updateTemplates will update the lookup map for validation checks that are
 // allowed within the template engine.
-func (g *Emitter) updateTemplates() {
+func (g *Generator) updateTemplates() {
 	for _, template := range g.t.Templates() {
 		g.knownTemplates[template.Name()] = template
 	}

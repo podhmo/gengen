@@ -48,7 +48,7 @@ func (v *EnumValue) Comment(value string) *EnumValue {
 	return v
 }
 
-func toEmitterInput(e Interface) map[string]interface{} {
+func toGeneratorInput(e Interface) map[string]interface{} {
 	src := e.EnumValues()
 	dst := make([]map[string]interface{}, len(src))
 	for i, x := range src {
@@ -70,7 +70,7 @@ func toEmitterInput(e Interface) map[string]interface{} {
 }
 
 func MarshalSchema(e Interface) ([]byte, error) {
-	return json.Marshal(toEmitterInput(e))
+	return json.Marshal(toGeneratorInput(e))
 }
 
 // util

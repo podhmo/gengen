@@ -6,20 +6,20 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/podhmo/gengen/genenum/generator/emitter"
+	"github.com/podhmo/gengen/genenum/generator"
 )
 
 func run() error {
-	g, err := emitter.NewEmitter()
+	g, err := generator.NewGenerator()
 	if err != nil {
-		return fmt.Errorf("new emitter: %w", err)
+		return fmt.Errorf("new generator: %w", err)
 	}
 
-	enums := []emitter.Enum{
+	enums := []generator.Enum{
 		{
 			Name: "Op",
 			Type: "uint8",
-			Values: []emitter.EnumValue{
+			Values: []generator.EnumValue{
 				{RawName: "Add", PrefixedName: "Add", Name: "Add", Value: uint64(1)}, // RawName, PrefixedName, Comment
 				{RawName: "Sub", PrefixedName: "Sub", Name: "Sub", Value: uint64(2)},
 				{RawName: "Mul", PrefixedName: "Mul", Name: "Mul", Value: uint64(3)},
