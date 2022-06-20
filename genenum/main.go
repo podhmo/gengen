@@ -18,14 +18,20 @@ func run() error {
 		return fmt.Errorf("new emitter: %w", err)
 	}
 
-	// TODO: this
-	op := &sandbox.Op{}
-	typename := op.Name(op)
+	// pkg name
+	pkg := "gen"
+	// input:
+	schemas := []schema.EnumInterface{
+		&sandbox.Op{},
+	}
 
-	src := schema.ToEmitterInput(op)
-	var dst emitter.Enum
+	targets := make([]emitter.Enum, len(schemas))
 
-	{
+	for i, x := range schemas {
+		var dst emitter.Enum
+		typename := x.Name(x)
+		src := schema.ToEmitterInput(x)
+
 		b, err := json.Marshal(src)
 		if err != nil {
 			return fmt.Errorf("marshal in %v: %w", typename, err)
@@ -34,17 +40,17 @@ func run() error {
 		if err := json.Unmarshal(b, &dst); err != nil {
 			return fmt.Errorf("unmarshal in %v: %w", typename, err)
 		}
+
+		// fixme: toJSON uint as float64 in marshal
+		for i, v := range dst.Values {
+			v.Value = uint64(v.Value.(float64))
+			dst.Values[i] = v
+		}
+
+		targets[i] = dst
 	}
 
-	// fixme
-	for i, v := range dst.Values {
-		v.Value = uint64(v.Value.(float64))
-		dst.Values[i] = v
-	}
-
-	pkg := "gen"
-	enums := []emitter.Enum{dst}
-	b, err := g.Emit(pkg, enums)
+	b, err := g.Emit(pkg, targets)
 	if err != nil {
 		return fmt.Errorf("emit: %w", err)
 	}
