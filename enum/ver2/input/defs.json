@@ -1,0 +1,33 @@
+{
+  "Name": "gen",
+  "Defs": [
+    {
+      "Name": "Op",
+      "Prefix": "",
+      "Type": "uint64",
+      "Values": [
+        {
+          "RawName": "Add",
+          "Name": "Add",
+          "PrefixedName": "Add",
+          "Value": 0,
+          "Comment": "lhs + rhs"
+        },
+        {
+          "RawName": "Mul",
+          "Name": "Mul",
+          "PrefixedName": "Mul",
+          "Value": 1,
+          "Comment": ""
+        },
+        {
+          "RawName": "Sub",
+          "Name": "Sub",
+          "PrefixedName": "Sub",
+          "Value": 2,
+          "Comment": ""
+        }
+      ]
+    }
+  ]
+}
