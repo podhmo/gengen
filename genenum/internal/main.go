@@ -35,7 +35,7 @@ type Symbol struct {
 type Options struct {
 	PackageName string   `flag:"package-name"`
 	Packages    []string `flag:"packages"`
-	Interface   string   `flag:"target-interface"`
+	Interface   string   `flag:"interface"`
 
 	DumpOnly bool `flag:"dump-only"`
 	// TODO: debug option
